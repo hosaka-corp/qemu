@@ -479,3 +479,7 @@ config ARMSSE_CPUID
 
 config ARMSSE_MHU
     bool
+
+config STARLET
+    bool
+

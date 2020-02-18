@@ -3098,8 +3098,14 @@ static inline bool arm_cpu_data_is_big_endian_a32(CPUARMState *env,
         return true;
     }
 #endif
-    /* In 32bit endianness is determined by looking at CPSR's E bit */
-    return env->uncached_cpsr & CPSR_E;
+    ///* In 32bit endianness is determined by looking at CPSR's E bit */
+    //return env->uncached_cpsr & CPSR_E;
+
+    // Let SCTLR.B determine data endianness 
+    if (sctlr_b)
+	    return true;
+    else
+	    return false;
 }
 
 static inline bool arm_cpu_data_is_big_endian_a64(int el, uint64_t sctlr)
@@ -3219,10 +3225,13 @@ static inline bool bswap_code(bool sctlr_b)
 #endif
         sctlr_b;
 #else
-    /* All code access in ARM is little endian, and there are no loaders
-     * doing swaps that need to be reversed
-     */
-    return 0;
+    ///* All code access in ARM is little endian, and there are no loaders
+    // * doing swaps that need to be reversed
+    // */
+    //return 0;
+
+    // Use SCTLR.B to determine code endianess in -system
+    return sctlr_b;
 #endif
 }
 
